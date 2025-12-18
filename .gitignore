@@ -1,0 +1,10 @@
+.env
+.venv/
+.vscode/
+__pycache__/
+.next/
+package-lock.json
+node_modules/
+*.md
+!README.md
+*.db

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: cognitiveai
+data:
+  FRONTEND_URL: "http://frontend-service"
+  BACKEND_HOST: "0.0.0.0"
+  BACKEND_PORT: "8000"
+  LOG_LEVEL: "INFO"
+  PYTHONUNBUFFERED: "1"

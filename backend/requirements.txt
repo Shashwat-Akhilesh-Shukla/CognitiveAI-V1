@@ -1,0 +1,14 @@
+fastapi==0.124.4
+httpx==0.28.1
+numpy==2.3.5
+pinecone==8.0.0
+pydantic==2.12.5
+pydantic-extra-types>=2.0.0
+sentence_transformers==5.2.0
+pdfplumber==0.10.3
+python-dotenv>=1.0.0
+uvicorn==0.38.0
+requests>=2.32.0
+pyjwt==2.10.0
+bcrypt==4.1.1
+redis>=4.6.0

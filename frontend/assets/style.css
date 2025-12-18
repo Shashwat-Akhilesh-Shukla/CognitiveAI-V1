@@ -1,0 +1,39 @@
+/* General */
+html, body, [class*="css"] {
+    background-color: #0e1117;
+    color: #e5e7eb;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* Chat bubbles */
+.chat-user {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    padding: 14px;
+    border-radius: 12px;
+    margin: 8px 0;
+}
+
+.chat-ai {
+    background: #1f2937;
+    padding: 14px;
+    border-radius: 12px;
+    margin: 8px 0;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #020617;
+}
+
+/* Buttons */
+button[kind="primary"] {
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    border: none;
+}
+
+/* File uploader */
+div[data-testid="stFileUploader"] {
+    border: 1px dashed #374151;
+    padding: 10px;
+    border-radius: 10px;
+}

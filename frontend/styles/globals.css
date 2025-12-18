@@ -1,0 +1,98 @@
+:root{
+  --bg: #0f1724;
+  --panel: #111827;
+  --muted: #9ca3af;
+  --accent: #7c3aed;
+  --user-bg: #0ea5a4;
+  --ai-bg: #1f2937;
+  --text: #e5e7eb;
+  color-scheme: dark;
+}
+
+:root.light{
+  --bg: #f6f8fb;
+  --panel: #ffffff;
+  --muted: #6b7280;
+  --accent: #7c3aed;
+  --user-bg: #06b6d4;
+  --ai-bg: #eef2ff;
+  --text: #111827;
+  color-scheme: light;
+}
+
+html,body,#__next{ height:100%; }
+body{
+  margin:0; font-family: Inter, system-ui, Arial; background:var(--bg); color:var(--text);
+}
+.app-root{ display:flex; height:100vh; }
+
+.sidebar{ width:300px; background:var(--panel); padding:12px; box-sizing:border-box; border-right:1px solid rgba(255,255,255,0.03); display:flex; flex-direction:column; }
+.sidebar-header{ display:flex; align-items:center; justify-content:space-between; gap:8px }
+.sidebar .btn{ margin-left:8px }
+.chat-list{ margin-top:12px; overflow:auto; flex:1 }
+.chat-item{ padding:8px; display:flex; align-items:center; gap:8px; border-radius:6px; cursor:pointer }
+.chat-item.active{ background:rgba(255,255,255,0.03) }
+.chat-title{ background:transparent; border:none; color:inherit; outline:none; font-weight:600 }
+
+.sidebar-footer{ border-top:1px solid rgba(255,255,255,0.03); padding-top:12px; margin-top:auto }
+.user-info{ margin-bottom:12px; padding:8px; border-radius:6px; background:rgba(255,255,255,0.03) }
+.user-label{ margin:0; font-size:11px; color:var(--muted); text-transform:uppercase }
+.username{ margin:4px 0 0 0; font-weight:600; word-break:break-all }
+.btn.logout{ width:100%; background:#dc3545; }
+
+.chat-main{ flex:1; display:flex; flex-direction:column; }
+.messages{ flex:1; padding:20px; overflow:auto; display:flex; flex-direction:column; gap:12px }
+.message{ display:flex }
+.message.ai{ justify-content:flex-start }
+.message.user{ justify-content:flex-end }
+.bubble{ max-width:70%; padding:12px 14px; border-radius:12px; background:var(--ai-bg); color:inherit }
+.message.user .bubble{ background:var(--user-bg); color:#fff }
+.composer{ display:flex; padding:12px; gap:8px; align-items:center; border-top:1px solid rgba(255,255,255,0.03); background:var(--panel) }
+.text-input{ flex:1; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit }
+.attach input{ display:none }
+.btn{ background:var(--accent); color:white; padding:8px 10px; border-radius:6px; border:none; cursor:pointer }
+
+.btn.delete{ background:rgba(255,40,40,0.14); color:#ffb4b4; padding:6px 8px; margin-left:8px }
+.btn.small{ padding:4px 6px; font-size:12px }
+.btn.toggle{ background:rgba(124,58,237,0.2); color:var(--accent) }
+.btn:disabled{ opacity:0.5; cursor:not-allowed }
+
+.attachment-preview{ font-size:13px; color:var(--muted); margin-right:8px }
+.upload-progress{ font-size:12px; color:var(--muted); margin-left:6px }
+
+.toast.error{ background:#8b1a1a; color:#fff; padding:8px 10px; border-radius:6px; margin-right:8px }
+
+.progress-wrap{ margin-top:8px; height:6px; background:rgba(255,255,255,0.06); border-radius:6px; overflow:hidden }
+.progress{ height:100%; background:linear-gradient(90deg,var(--accent), #34d399); }
+
+/* Attachment bar (above input) */
+.attachment-bar{ display:flex; align-items:center; gap:12px; padding:8px 12px; background:var(--panel); border-top:1px solid rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.03) }
+.progress-circle{ width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px }
+.progress-inner{ font-size:11px }
+.attachment-name{ font-weight:600; color:inherit }
+
+/* Make the composer visually attached to the attachment bar */
+.composer{ display:flex; padding:12px; gap:8px; align-items:center; border-bottom-left-radius:8px; border-bottom-right-radius:8px }
+
+.file-meta{ margin-top:8px; font-size:12px; color:var(--muted) }
+
+/* Auth page styling */
+.auth-container{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:var(--bg) }
+.auth-box{ background:var(--panel); border-radius:12px; padding:32px; max-width:400px; width:90%; box-shadow:0 4px 20px rgba(0,0,0,0.3) }
+.auth-title{ margin:0 0 8px 0; font-size:28px; font-weight:700 }
+.auth-subtitle{ margin:0 0 24px 0; color:var(--muted); font-size:14px }
+.auth-form{ display:flex; flex-direction:column; gap:16px }
+.form-group{ display:flex; flex-direction:column; gap:6px }
+.form-group label{ font-weight:600; font-size:13px }
+.form-group input{ padding:10px 12px; border:1px solid rgba(255,255,255,0.1); border-radius:6px; background:rgba(255,255,255,0.05); color:inherit; font-size:14px }
+.form-group input:focus{ outline:none; border-color:var(--accent); background:rgba(124,58,237,0.1) }
+.error-message{ background:rgba(220,53,69,0.2); color:#ff7f7f; padding:10px 12px; border-radius:6px; font-size:13px }
+.auth-button{ padding:12px; border:none; border-radius:8px; background:var(--accent); color:white; font-weight:600; cursor:pointer; font-size:15px }
+.auth-button:hover:not(:disabled){ background:#6d28d9 }
+.auth-toggle{ text-align:center; margin-top:8px }
+.toggle-button{ background:none; border:none; color:var(--accent); cursor:pointer; text-decoration:underline; padding:0; font-size:inherit }
+
+.loading{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:var(--bg); color:var(--text) }
+
+/* dark mode toggle via .dark on documentElement */
+:root.dark{ --bg: #0b1220; }
