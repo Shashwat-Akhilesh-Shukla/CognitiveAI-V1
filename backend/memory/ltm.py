@@ -8,7 +8,8 @@ user facts, preferences, and conversation highlights with semantic search.
 import uuid
 from typing import List, Dict, Any, Optional, Tuple
 from pinecone import Pinecone, ServerlessSpec
-from sentence_transformers import SentenceTransformer
+# from sentence_transformers import SentenceTransformer
+import requests
 import numpy as np
 import logging
 import os
@@ -50,8 +51,16 @@ class LTMManager:
         
         self.pc = Pinecone(api_key=self.api_key)
 
+        # OLD EMBEDDING LOGIC - Now using Jina API
+        # self.embedding_model = SentenceTransformer(embedding_model)
         
-        self.embedding_model = SentenceTransformer(embedding_model)
+        # Jina API configuration
+        self.jina_api_key = os.getenv("JINA_API_KEY")
+        if not self.jina_api_key:
+            raise ValueError("Jina API key not provided. Set JINA_API_KEY environment variable.")
+        
+        self.jina_base_url = "https://api.jina.ai/v1"
+        self.jina_model = "jina-embeddings-v2-base-en"  # Can be changed as needed
 
         
         self._ensure_index()
@@ -62,8 +71,11 @@ class LTMManager:
             
             existing_indexes = [index_info["name"] for index_info in self.pc.list_indexes()]
             if self.index_name not in existing_indexes:
+                # OLD LOGIC - get dimension from SentenceTransformer
+                # vector_size = self.embedding_model.get_sentence_embedding_dimension()
                 
-                vector_size = self.embedding_model.get_sentence_embedding_dimension()
+                # Jina embeddings dimension
+                vector_size = 768  # jina-embeddings-v2-base-en returns 768-dimensional vectors
 
                 self.pc.create_index(
                     name=self.index_name,
@@ -85,6 +97,46 @@ class LTMManager:
             logger.error(f"Failed to initialize Pinecone index: {e}")
             raise
 
+    def _get_embedding(self, text: str) -> List[float]:
+        """
+        Get embedding for text using Jina API.
+        
+        Args:
+            text: Text to embed
+            
+        Returns:
+            Embedding vector as list of floats
+        """
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.jina_api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            data = {
+                "model": self.jina_model,
+                "input": [text]
+            }
+            
+            response = requests.post(
+                f"{self.jina_base_url}/embeddings",
+                json=data,
+                headers=headers,
+                timeout=30
+            )
+            
+            if response.status_code != 200:
+                logger.error(f"Jina API error: {response.status_code} - {response.text}")
+                raise Exception(f"Failed to get embedding from Jina: {response.text}")
+            
+            result = response.json()
+            embedding = result['data'][0]['embedding']
+            return embedding
+            
+        except Exception as e:
+            logger.error(f"Failed to get embedding from Jina API: {e}")
+            raise
+
     def add_memory(self, content: str, memory_type: str = "general",
                    metadata: Optional[Dict[str, Any]] = None,
                    importance: float = 1.0,
@@ -103,8 +155,11 @@ class LTMManager:
         """
         memory_id = str(uuid.uuid4())
 
+        # OLD EMBEDDING LOGIC - Now using Jina API
+        # embedding = self.embedding_model.encode(content).tolist()
         
-        embedding = self.embedding_model.encode(content).tolist()
+        # Get embedding from Jina API
+        embedding = self._get_embedding(content)
 
         
         metadata_dict = {
@@ -143,8 +198,11 @@ class LTMManager:
         Returns:
             List of memory results with scores
         """
+        # OLD EMBEDDING LOGIC - Now using Jina API
+        # query_embedding = self.embedding_model.encode(query).tolist()
         
-        query_embedding = self.embedding_model.encode(query).tolist()
+        # Get embedding from Jina API
+        query_embedding = self._get_embedding(query)
 
         
         filter_dict = {}
@@ -198,7 +256,7 @@ class LTMManager:
         try:
             
             result = self.index.query(
-                vector=[0.0] * self.embedding_model.get_sentence_embedding_dimension(),  
+                vector=[0.0] * 768,  # Jina embedding dimension
                 filter={"id": {"$eq": memory_id}},
                 top_k=1,
                 include_metadata=True,
@@ -255,8 +313,11 @@ class LTMManager:
         
         new_metadata["timestamp"] = self._get_timestamp()
 
+        # OLD EMBEDDING LOGIC - Now using Jina API
+        # embedding = self.embedding_model.encode(content if content is not None else current["content"]).tolist()
         
-        embedding = self.embedding_model.encode(content if content is not None else current["content"]).tolist()
+        # Get embedding from Jina API
+        embedding = self._get_embedding(content if content is not None else current["content"])
 
         
         self.index.delete(ids=[memory_id])
@@ -287,7 +348,7 @@ class LTMManager:
             filter_dict = {"user_id": {"$eq": user_id}}
             
             resp = self.index.query(
-                vector=[0.0] * self.embedding_model.get_sentence_embedding_dimension(),
+                vector=[0.0] * 768,  # Jina embedding dimension
                 filter=filter_dict,
                 top_k=batch_size,
                 include_metadata=True,
