@@ -2,9 +2,11 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-COPY frontend/package*.json ./
+# Install deps
+COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 
+# Copy source and build
 COPY frontend/ .
 RUN npm run build
 
@@ -14,11 +16,12 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY frontend/package*.json ./
+# Copy only what is needed to run
+COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.js ./next.config.js
 
 EXPOSE 3000
