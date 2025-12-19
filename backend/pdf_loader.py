@@ -177,21 +177,20 @@ class PDFLoader:
         text_parts = []
 
         for element in elements:
-            
             element_text = str(element)
 
-            
-            if hasattr(element, 'category'):
-                if element.category == 'Title':
-                    element_text = f"\n
-                elif element.category == 'Header':
-                    element_text = f"\n
-                elif element.category == 'Table':
+            if hasattr(element, "category"):
+                if element.category == "Title":
+                    element_text = f"\n{element_text}\n"
+                elif element.category == "Header":
+                    element_text = f"\n{element_text}\n"
+                elif element.category == "Table":
                     element_text = f"\n[TABLE]\n{element_text}\n[/TABLE]\n"
 
             text_parts.append(element_text)
 
         return "\n".join(text_parts)
+
 
     def _extract_pdf_metadata(self, pdf_path: Path, full_text: str, user_metadata: Dict[str, Any]) -> Dict[str, Any]:
         """Extract metadata from PDF."""
