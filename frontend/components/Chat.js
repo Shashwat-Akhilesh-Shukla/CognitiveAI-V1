@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Message from './Message'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export default function Chat({ chats, currentChatId, updateChats, token }){
   const [text, setText] = useState('')

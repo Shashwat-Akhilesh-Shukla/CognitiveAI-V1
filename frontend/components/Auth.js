@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export default function Auth({ onAuthSuccess }) {
   const [isSignup, setIsSignup] = useState(false)

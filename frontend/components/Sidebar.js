@@ -1,6 +1,8 @@
 import { nanoid } from 'nanoid'
 import React, { useEffect, useState } from 'react'
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+
 export default function Sidebar({ chats, currentChatId, setCurrentChatId, updateChats, user, onLogout, token }){
   function createNew(){
     // store current as-is and create new
@@ -39,7 +41,7 @@ export default function Sidebar({ chats, currentChatId, setCurrentChatId, update
   async function handleLogout() {
     try {
       // Call logout endpoint to clear server-side STM
-      await fetch('http://localhost:8000/auth/logout', {
+      await fetch(`${BACKEND_URL}/auth/logout`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       })
