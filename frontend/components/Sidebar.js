@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid'
 import React, { useEffect, useState } from 'react'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
-
+console.log('BACKEND_URL in Sidebar.js:', BACKEND_URL)
 export default function Sidebar({ chats, currentChatId, setCurrentChatId, updateChats, user, onLogout, token }){
   function createNew(){
     // store current as-is and create new

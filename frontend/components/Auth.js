@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+console.log('BACKEND_URL in Auth.js:', BACKEND_URL)
 
 export default function Auth({ onAuthSuccess }) {
   const [isSignup, setIsSignup] = useState(false)
