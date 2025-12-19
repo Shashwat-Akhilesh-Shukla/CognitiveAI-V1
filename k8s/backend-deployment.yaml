@@ -43,7 +43,7 @@ spec:
             name: backend-config
         env:
         - name: REDIS_URL
-          value: "rediss://default:AVS9AAIncDE1OTk5MTY3NjUzM2U0ZWZmYWQyNDE4OGM2ZjRhMzczNXAxMjE2OTM@fair-warthog-21693.upstash.io:6379"
+          value: ""
         resources:
           requests:
             memory: "512Mi"
