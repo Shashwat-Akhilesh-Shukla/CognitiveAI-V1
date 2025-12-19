@@ -265,19 +265,31 @@ class PDFLoader:
         
         return end
 
+    from typing import Dict, Any
+
     def _generate_document_summary(self, full_text: str, metadata: Dict[str, Any]) -> str:
         """Generate a summary of the document."""
-        title = metadata.get("title", metadata.get("filename", "Unknown Document"))
 
-        
-        summary_text = full_text[:500]
+        title = metadata.get("title") or metadata.get("filename") or "Unknown Document"
 
-        
-        lines = full_text.split('\n')
+        # Hard cutoff summary preview
+        summary_text = full_text[:500].strip()
+
+        # Extract probable section headers from the first 20 lines
+        lines = full_text.split("\n")
         sections = []
-        for line in lines[:20]:  
-            if line.strip().startswith(('
-                sections.append(line.strip())
+
+        for line in lines[:20]:
+            line = line.strip()
+            if not line:
+                continue
+
+            # Common section header patterns
+            if (
+                line.isupper()
+                or line.startswith(("#", "##", "Section", "Chapter"))
+            ):
+                sections.append(line)
 
         summary = f"Document: {title}\n\nSummary: {summary_text}..."
 
@@ -287,6 +299,7 @@ class PDFLoader:
         summary += f"\n\nTotal length: {len(full_text)} characters"
 
         return summary
+
 
     def search_pdf_knowledge(self, query: str, document_id: Optional[str] = None,
                            limit: int = 10, user_id: Optional[str] = None) -> List[Dict[str, Any]]:
