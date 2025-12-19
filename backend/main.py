@@ -38,20 +38,25 @@ app = FastAPI(
     version="2.0.0"
 )
 
+frontend_url = os.getenv(
+    "FRONTEND_URL",
+    "https://cognitiveai-v1-frontend.onrender.com"
+).rstrip("/")
 
-frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
-allow_origins = [frontend_url]
-if frontend_url != "http://localhost:3000":
-    
-    allow_origins.extend(["http://localhost:3000", "http://127.0.0.1:3000"])
+allow_origins = [
+    frontend_url,
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "DELETE", "PUT"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 stm_manager: Optional[STMManager] = None
