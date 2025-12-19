@@ -2,6 +2,8 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 
+ENV NEXT_PUBLIC_API_URL=https://cognitiveai-v1.onrender.com
+ENV NEXT_PUBLIC_BACKEND_URL=https://cognitiveai-v1.onrender.com
 # Install deps
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
@@ -22,10 +24,6 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/next.config.js ./next.config.js
-
-ENV NEXT_PUBLIC_API_URL=https://cognitiveai-v1.onrender.com
-ENV NEXT_PUBLIC_BACKEND_URL=https://cognitiveai-v1.onrender.com
-
 
 EXPOSE 3000
 
