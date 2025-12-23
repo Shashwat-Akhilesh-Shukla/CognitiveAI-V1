@@ -1,6 +1,7 @@
 # CognitiveAI – A Memory-Augmented Personal Intelligence Engine
 
 A high-performance AI agent with short-term memory, long-term vector memory, PDF knowledge ingestion, and autonomous reasoning, built using modern LLMOps architecture.
+Deployed: https://cognitiveai-v1-frontend.onrender.com
 
 ## Core MVP Features
 
